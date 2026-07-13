@@ -1,0 +1,54 @@
+{
+  "name": "linacre.wallpaper",
+  "displayName": "Linacre System Monitor",
+  "description": "Real-time system monitoring wallpaper with linacre.site theme. Dual-monitor support, WebSocket live stats, command palette, Docker/GPU/process monitoring.",
+  "author": "David Linacre",
+  "version": "1.1.0",
+  "website": "https://www.linacre.site",
+  "license": "MIT",
+  "type": "web",
+  "main": "index.html",
+  "preview": "preview.svg",
+  "tags": ["monitor", "system", "developer", "linacre", "terminal", "dashboard", "dual-monitor"],
+  "config": {
+    "wsHost": {
+      "type": "string",
+      "label": "WebSocket Host",
+      "default": "127.0.0.1",
+      "description": "Backend server hostname"
+    },
+    "wsPort": {
+      "type": "number",
+      "label": "WebSocket Port",
+      "default": 8765,
+      "description": "Backend server port"
+    },
+    "updateInterval": {
+      "type": "number",
+      "label": "Update Interval (ms)",
+      "default": 1500,
+      "min": 500,
+      "max": 10000,
+      "description": "How often to refresh stats"
+    },
+    "showGPU": {
+      "type": "boolean",
+      "label": "Show GPU Panel",
+      "default": true,
+      "description": "Display GPU monitoring panel"
+    },
+    "showDocker": {
+      "type": "boolean",
+      "label": "Show Docker Panel",
+      "default": true,
+      "description": "Display Docker container monitoring"
+    },
+    "theme": {
+      "type": "select",
+      "label": "Theme",
+      "default": "dark",
+      "options": ["light", "dark", "auto"],
+      "description": "Color theme (matches linacre.site)"
+    }
+  }
+}
