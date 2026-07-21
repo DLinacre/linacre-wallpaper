@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+  <defs>
+    <!-- Sky gradient: deep night to amber horizon -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#05080f"/>
+      <stop offset="30%" stop-color="#0b1020"/>
+      <stop offset="55%" stop-color="#141c30"/>
+      <stop offset="75%" stop-color="#1a2438"/>
+      <stop offset="88%" stop-color="#2a1e20"/>
+      <stop offset="93%" stop-color="#3a2218"/>
+      <stop offset="96%" stop-color="#4a2810"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <!-- Mountain base: deep rock -->
+    <linearGradient id="mtnFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a24"/>
+      <stop offset="100%" stop-color="#0d0d14"/>
+    </linearGradient>
+    <linearGradient id="mtnMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#222230"/>
+      <stop offset="100%" stop-color="#111120"/>
+    </linearGradient>
+    <linearGradient id="mtnFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2a3a"/>
+      <stop offset="100%" stop-color="#151525"/>
+    </linearGradient>
+
+    <!-- Snow/ice cap gradient -->
+    <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8e8f0" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#c8c8d8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#606078" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Amber glow mist -->
+    <radialGradient id="glow" cx="50%" cy="92%" r="30%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Stars filter -->
+    <filter id="starGlow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Moon glow -->
+    <filter id="moonGlow">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+
+    <filter id="moonGlowSoft">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+
+    <!-- Snow shimmer -->
+    <linearGradient id="snowShimmer" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#d0d0e0" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#b0b0c8" stop-opacity="0.7"/>
+    </linearGradient>
+
+    <!-- Rock texture noise pattern -->
+    <pattern id="rockNoise" patternUnits="userSpaceOnUse" width="4" height="4">
+      <rect width="4" height="4" fill="none"/>
+      <circle cx="1" cy="1" r="0.5" fill="#ffffff" opacity="0.02"/>
+      <circle cx="3" cy="3" r="0.3" fill="#000000" opacity="0.03"/>
+    </pattern>
+
+    <!-- Foreground overlay gradient -->
+    <linearGradient id="foregroundOverlay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b0e14" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#0b0e14" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0b0e14" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="2560" height="1440" fill="url(#sky)"/>
+
+  <!-- Stars (subtle, scattered) -->
+  <g fill="#ffffff" filter="url(#starGlow)">
+    <circle cx="200" cy="120" r="1.2" opacity="0.6"/>
+    <circle cx="450" cy="80" r="0.8" opacity="0.4"/>
+    <circle cx="700" cy="160" r="1.0" opacity="0.5"/>
+    <circle cx="1100" cy="90" r="1.5" opacity="0.7"/>
+    <circle cx="1400" cy="50" r="0.6" opacity="0.3"/>
+    <circle cx="1700" cy="140" r="1.1" opacity="0.5"/>
+    <circle cx="2000" cy="70" r="0.9" opacity="0.4"/>
+    <circle cx="2300" cy="110" r="1.3" opacity="0.6"/>
+    <circle cx="300" cy="200" r="0.7" opacity="0.3"/>
+    <circle cx="900" cy="220" r="1.0" opacity="0.4"/>
+    <circle cx="1500" cy="180" r="0.5" opacity="0.3"/>
+    <circle cx="1850" cy="200" r="0.8" opacity="0.4"/>
+    <circle cx="2150" cy="160" r="0.6" opacity="0.3"/>
+    <circle cx="550" cy="260" r="0.9" opacity="0.3"/>
+    <circle cx="1250" cy="250" r="0.7" opacity="0.35"/>
+    <circle cx="2400" cy="230" r="1.1" opacity="0.45"/>
+    <circle cx="100" cy="300" r="0.5" opacity="0.25"/>
+    <circle cx="1600" cy="280" r="0.8" opacity="0.3"/>
+    <circle cx="750" cy="310" r="0.6" opacity="0.25"/>
+    <circle cx="2050" cy="300" r="0.7" opacity="0.3"/>
+  </g>
+
+  <!-- Moon (crescent) -->
+  <g transform="translate(1850, 180)">
+    <circle cx="0" cy="0" r="28" fill="#e8e0c0" filter="url(#moonGlow)" opacity="0.3"/>
+    <circle cx="0" cy="0" r="22" fill="#f0e8d0" filter="url(#moonGlowSoft)" opacity="0.5"/>
+    <circle cx="0" cy="0" r="18" fill="#f5f0e0" opacity="0.9"/>
+    <circle cx="6" cy="-4" r="16" fill="#0b1020" opacity="0.85"/>
+  </g>
+
+  <!-- Far mountain range (background) -->
+  <path d="M0 920 L120 850 L200 860 L320 780 L400 790 L500 720 L600 740 L700 680 L780 700 L880 640 L1000 660 L1100 580 L1200 600 L1280 560 L1360 580 L1460 520 L1560 540 L1660 480 L1780 500 L1880 440 L1980 460 L2080 400 L2200 420 L2320 360 L2440 380 L2560 320 L2560 1440 L0 1440 Z" fill="url(#mtnFar)" opacity="0.5"/>
+  <path d="M0 920 L120 850 L200 860 L320 780 L400 790 L500 720 L600 740 L700 680 L780 700 L880 640 L1000 660 L1100 580 L1200 600 L1280 560 L1360 580 L1460 520 L1560 540 L1660 480 L1780 500 L1880 440 L1980 460 L2080 400 L2200 420 L2320 360 L2440 380 L2560 320 L2560 1440 L0 1440 Z" fill="url(#rockNoise)" opacity="0.3"/>
+
+  <!-- Mid mountain range -->
+  <path d="M0 1050 L180 960 L280 980 L400 900 L520 920 L640 840 L760 860 L900 780 L1020 800 L1160 720 L1280 740 L1420 660 L1560 680 L1700 600 L1840 620 L1980 540 L2120 560 L2260 480 L2400 500 L2560 440 L2560 1440 L0 1440 Z" fill="url(#mtnMid)" opacity="0.7"/>
+  <path d="M0 1050 L180 960 L280 980 L400 900 L520 920 L640 840 L760 860 L900 780 L1020 800 L1160 720 L1280 740 L1420 660 L1560 680 L1700 600 L1840 620 L1980 540 L2120 560 L2260 480 L2400 500 L2560 440 L2560 1440 L0 1440 Z" fill="url(#rockNoise)" opacity="0.2"/>
+
+  <!-- Front mountain range (closest, most detail) -->
+  <path d="M0 1200 L160 1100 L320 1140 L500 1050 L660 1080 L840 1000 L1000 1020 L1180 940 L1340 960 L1520 880 L1700 900 L1860 840 L2020 860 L2200 780 L2380 800 L2560 740 L2560 1440 L0 1440 Z" fill="url(#mtnFront)"/>
+  <path d="M0 1200 L160 1100 L320 1140 L500 1050 L660 1080 L840 1000 L1000 1020 L1180 940 L1340 960 L1520 880 L1700 900 L1860 840 L2020 860 L2200 780 L2380 800 L2560 740 L2560 1440 L0 1440 Z" fill="url(#rockNoise)" opacity="0.15"/>
+
+  <!-- Snow caps (calculated to overlap mountain peaks) -->
+
+  <!-- Far range snow -->
+  <path d="M2080 400 L2140 408 L2200 420 L2260 412 L2320 360 L2380 385 L2440 380 L2500 395 L2560 320 L2560 420 L2500 410 L2440 395 L2380 400 L2320 380 L2260 425 L2200 435 L2140 420 L2080 415 Z" fill="url(#snowShimmer)" opacity="0.3"/>
+  <path d="M1460 520 L1520 530 L1560 540 L1620 525 L1660 480 L1720 510 L1780 500 L1840 515 L1880 440 L1940 470 L1980 460 L2040 480 L2080 400 L2080 450 L2040 495 L1980 475 L1940 485 L1880 460 L1840 530 L1780 515 L1720 525 L1660 500 L1620 540 L1560 555 L1520 545 L1460 535 Z" fill="url(#snowShimmer)" opacity="0.35"/>
+
+  <!-- Mid range snow -->
+  <path d="M1980 540 L2050 555 L2120 560 L2180 545 L2260 480 L2320 510 L2400 500 L2480 520 L2560 440 L2560 480 L2480 535 L2400 515 L2320 525 L2260 500 L2180 560 L2120 575 L2050 570 L1980 555 Z" fill="url(#snowShimmer)" opacity="0.45"/>
+  <path d="M1420 660 L1500 670 L1560 680 L1640 665 L1700 600 L1780 630 L1840 620 L1900 640 L1980 540 L1980 580 L1900 655 L1840 635 L1780 645 L1700 620 L1640 680 L1560 695 L1500 685 L1420 675 Z" fill="url(#snowShimmer)" opacity="0.5"/>
+
+  <!-- Front range snow -->
+  <path d="M1860 840 L1940 850 L2020 860 L2100 845 L2200 780 L2280 810 L2380 800 L2480 820 L2560 740 L2560 790 L2480 835 L2380 815 L2280 825 L2200 795 L2100 860 L2020 875 L1940 865 L1860 855 Z" fill="url(#snowShimmer)" opacity="0.55"/>
+  <path d="M1180 940 L1260 950 L1340 960 L1420 945 L1520 880 L1600 910 L1700 900 L1780 920 L1860 840 L1860 875 L1780 935 L1700 915 L1600 925 L1520 900 L1420 960 L1340 975 L1260 965 L1180 955 Z" fill="url(#snowShimmer)" opacity="0.6"/>
+  <path d="M840 1000 L920 1010 L1000 1020 L1080 1005 L1180 940 L1260 970 L1340 960 L1380 975 L1340 975 L1260 985 L1180 955 L1080 1020 L1000 1035 L920 1025 L840 1015 Z" fill="url(#snowShimmer)" opacity="0.5"/>
+
+  <!-- Main summit peak (the prominent one, near center-right) -->
+  <path d="M1700 600 L1720 590 L1740 575 L1760 558 L1780 540 L1800 520 L1820 538 L1840 555 L1860 570 L1880 585 L1900 600 L1920 540 L1900 525 L1880 510 L1860 495 L1840 478 L1820 460 L1800 440 L1780 460 L1760 478 L1740 495 L1720 510 L1700 525 L1680 540 L1660 555 L1640 570 L1620 585 L1600 600 L1620 580 L1640 565 L1660 550 L1680 540 Z" fill="url(#snowShimmer)" opacity="0.7"/>
+  <path d="M1800 440 L1810 448 L1820 460 L1830 448 L1800 440 Z" fill="#f0e8d0" opacity="0.6"/>
+  <path d="M1800 440 L1795 445 L1800 450 L1805 445 Z" fill="#ffffff" opacity="0.4"/>
+
+  <!-- Far left peak -->
+  <path d="M100 1050 L120 1030 L140 1010 L160 990 L180 1020 L200 1050 L220 1035 L240 1020 L260 1000 L280 980 L300 960 L280 1010 L260 1030 L240 1045 L220 1060 L200 1070 L180 1060 L160 1050 L140 1040 L120 1055 Z" fill="url(#snowShimmer)" opacity="0.3"/>
+
+  <!-- Mid-left peak -->
+  <path d="M500 1050 L520 1030 L540 1010 L560 990 L580 1020 L600 1050 L620 1030 L640 1010 L660 990 L680 970 L660 1010 L640 1035 L620 1050 L600 1060 L580 1050 L560 1040 L540 1030 L520 1055 Z" fill="url(#snowShimmer)" opacity="0.35"/>
+
+  <!-- Small clouds / mist wisps -->
+  <g fill="#ffffff" opacity="0.03">
+    <ellipse cx="800" cy="700" rx="120" ry="20"/>
+    <ellipse cx="1600" cy="550" rx="150" ry="15"/>
+    <ellipse cx="2200" cy="450" rx="100" ry="12"/>
+  </g>
+
+  <!-- Amber glow behind mountain (mist/horizon) -->
+  <rect width="2560" height="1440" fill="url(#glow)"/>
+
+  <!-- Foreground darkening overlay -->
+  <rect width="2560" height="1440" fill="url(#foregroundOverlay)"/>
+
+  <!-- Very subtle amber edge light on mountains (rim lighting from horizon) -->
+  <path d="M0 1050 L180 960 L280 980 L400 900 L520 920 L640 840 L760 860 L900 780 L1020 800 L1160 720 L1280 740 L1420 660 L1560 680 L1700 600 L1840 620 L1980 540 L2120 560 L2260 480 L2400 500 L2560 440" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.06"/>
+</svg>

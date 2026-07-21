@@ -1,0 +1,12 @@
+{
+  "AppVersion": "1.0.0.0",
+  "Title": "Linacre System Monitor",
+  "Thumbnail": "preview.svg",
+  "Preview": "preview.svg",
+  "Desc": "Real-time system monitoring wallpaper with linacre.site theme. Dual-monitor support, WebSocket live stats, command palette.",
+  "Author": "David Linacre",
+  "License": "MIT",
+  "Contact": "https://www.linacre.site",
+  "Type": 1,
+  "FileName": "index.html"
+}

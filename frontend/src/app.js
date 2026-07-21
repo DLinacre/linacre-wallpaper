@@ -66,14 +66,26 @@ export class WallpaperApp {
   }
 
   initTheme() {
-    // Priority: URL param > localStorage > system preference > default (dark)
-    let theme = this.theme;
+    // URL param overrides everything (Lively Wallpaper / ?theme=light|auto)
+    let theme = this.theme; // 'dark' default
     try {
-      const saved = localStorage.getItem('linacre-wallpaper-theme');
-      if (saved) theme = saved;
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('theme')) theme = params.get('theme');
     } catch (e) {}
 
-    // Apply theme
+    // `?theme=auto` follows OS preference. Anything else is taken literally.
+    if (theme === 'auto') {
+      theme = window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+
+    // Fall back to localStorage only if we still have the default
+    if (theme === 'dark' && this.theme === 'dark') {
+      try {
+        const saved = localStorage.getItem('linacre-wallpaper-theme');
+        if (saved === 'light' || saved === 'dark') theme = saved;
+      } catch (e) {}
+    }
+
     this.setTheme(theme, false); // Don't persist on init
   }
 
@@ -184,6 +196,12 @@ export class WallpaperApp {
         }
       }
     });
+
+    // Click handler for the command palette trigger button
+    const trigger = document.getElementById('cmdPaletteTrigger');
+    if (trigger) {
+      trigger.addEventListener('click', () => this.openCommandPalette());
+    }
   }
 
   bindProcessFilter() {
@@ -234,6 +252,38 @@ export class WallpaperApp {
     Object.entries(this.panelVisibility).forEach(([key, visible]) => {
       const panel = document.getElementById(`${key}Panel`);
       if (panel) panel.hidden = !visible;
+    });
+
+    // Add collapse toggle icons and click handlers to all panels
+    document.querySelectorAll('.panel').forEach(panel => {
+      const header = panel.querySelector('.panel-header');
+      if (!header) return;
+
+      // Add collapse icon if not already present
+      if (!panel.querySelector('.panel-collapse-icon')) {
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        icon.setAttribute('class', 'panel-collapse-icon');
+        icon.setAttribute('viewBox', '0 0 24 24');
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
+        icon.setAttribute('stroke-width', '2');
+        icon.setAttribute('stroke-linecap', 'round');
+        icon.setAttribute('stroke-linejoin', 'round');
+        icon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+        header.appendChild(icon);
+      }
+
+      // Click header to toggle collapse
+      header.addEventListener('click', (e) => {
+        // Don't toggle if clicking a button or input inside header
+        if (e.target.closest('button') || e.target.closest('input')) return;
+        panel.classList.toggle('collapsed');
+      });
+
+      // Double-click anywhere on panel to expand fully (remove collapsed)
+      panel.addEventListener('dblclick', () => {
+        panel.classList.remove('collapsed');
+      });
     });
   }
 
@@ -703,8 +753,15 @@ export class WallpaperApp {
     const overlay = document.getElementById('cmdPaletteOverlay');
     const input = document.getElementById('cmdInput');
     if (overlay) overlay.hidden = true;
-    if (input) input.value = '';
+    if (input) {
+      input.value = '';
+      // Reset display:none set by showCommandMenu() so the input is
+      // visible and typeable the next time the palette opens.
+      input.style.display = '';
+    }
     document.getElementById('cmdResults').innerHTML = '';
+    // Clear the keyboard nav listener leak guard
+    this._cmdKeyHandler = null;
   }
 
   populateCommands(query) {
@@ -759,13 +816,20 @@ export class WallpaperApp {
 
   setupCommandNavigation(commands) {
     const results = document.getElementById('cmdResults');
+    const input = document.getElementById('cmdInput');
     const items = results?.querySelectorAll('.cmd-result');
-    if (!items.length) return;
+    if (!items.length || !input) return;
+
+    // Remove the previous handler (if any) so listeners don't accumulate
+    // every time the user types a character.
+    if (this._cmdKeyHandler) {
+      input.removeEventListener('keydown', this._cmdKeyHandler);
+    }
 
     let selectedIndex = 0;
     items[0]?.classList.add('selected');
 
-    const handleKey = (e) => {
+    this._cmdKeyHandler = (e) => {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         items[selectedIndex]?.classList.remove('selected');
@@ -784,12 +848,12 @@ export class WallpaperApp {
         if (cmd) { cmd.action(); this.closeCommandPalette(); }
       } else if (e.key === 'Escape') {
         this.closeCommandPalette();
-      } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-        return; // Let input handle it
       }
+      // Other keys (including printable characters) fall through to the
+      // input field's normal keydown handler, so typing still works.
     };
 
-    document.getElementById('cmdInput')?.addEventListener('keydown', handleKey);
+    input.addEventListener('keydown', this._cmdKeyHandler);
   }
 
   sendCommand(cmd) {
