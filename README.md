@@ -364,4 +364,4 @@ MIT — Use freely, modify, share. Attribution appreciated.
 
 ---
 
-*Built with the same engineering standards as [GhostMail](https://github.com/LIN4CRE/GhostMail) and [linacre.site](https://www.linacre.site).*
+*Built with the same engineering standards as [GhostMail](https://github.com/DLinacre/GhostMail) and [linacre.site](https://www.linacre.site).*

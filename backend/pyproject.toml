@@ -17,7 +17,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://www.linacre.site"
-Repository = "https://github.com/LIN4CRE/linacre-wallpaper"
+Repository = "https://github.com/DLinacre/linacre-wallpaper"
 
 [build-system]
 requires = ["setuptools>=75"]
