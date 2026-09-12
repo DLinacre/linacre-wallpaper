@@ -67,6 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 6. Controls & Shortcuts
+  const savedIconZone = localStorage.getItem('linacre_icon_zone_width') || '280px';
+  document.documentElement.style.setProperty('--icon-zone-width', savedIconZone);
+
+  const iconZoneBtn = document.getElementById('iconZoneToggleBtn');
+  if (iconZoneBtn) {
+    iconZoneBtn.addEventListener('click', () => {
+      const widths = ['280px', '360px', '200px', '0px'];
+      const cur = getComputedStyle(document.documentElement).getPropertyValue('--icon-zone-width').trim() || '280px';
+      const curIdx = widths.indexOf(cur);
+      const nextWidth = widths[(curIdx + 1) % widths.length];
+      document.documentElement.style.setProperty('--icon-zone-width', nextWidth);
+      localStorage.setItem('linacre_icon_zone_width', nextWidth);
+      terminal.print(`<span class="term-success">✓ Desktop Icon Clearance set to: <strong>${nextWidth}</strong></span>`);
+    });
+  }
+
   const matrixBtn = document.getElementById('toggleMatrixBtn');
   if (matrixBtn) {
     matrixBtn.addEventListener('click', () => terminal.cmdToggleMatrix());

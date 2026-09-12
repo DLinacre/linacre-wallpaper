@@ -18,6 +18,9 @@
   <!-- Subtle gradient & grid overlay -->
   <div class="cyber-grid-overlay" aria-hidden="true"></div>
 
+  <!-- Boundary Accent for Desktop Icons Zone -->
+  <div class="icon-zone-boundary" id="iconZoneBoundary" aria-hidden="true"></div>
+
   <div id="app" class="dashboard-container">
     
     <!-- TOP BAR: System Ident, Clock, Tailscale & Controls -->
@@ -48,6 +51,14 @@
         </div>
 
         <div class="quick-toggles">
+          <button id="iconZoneToggleBtn" class="icon-toggle-btn" title="Desktop Icons Zone (Cycle: 280px / 360px / 200px / 0px)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="18" rx="1"></rect>
+              <line x1="13" y1="3" x2="13" y2="21" stroke-dasharray="2 2"></line>
+              <rect x="16" y="3" width="5" height="18" rx="1"></rect>
+            </svg>
+          </button>
+
           <button id="toggleMatrixBtn" class="icon-toggle-btn" title="Toggle Matrix Digital Rain (M)">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 4h16v16H4z"></path><path d="M4 9h16M9 4v16"></path>

@@ -12,6 +12,9 @@
   --border-active: rgba(245, 158, 11, 0.45);
   --border-glow: 0 0 16px rgba(245, 158, 11, 0.18);
   
+  /* Desktop Icons Clearance Zone (Left side unobstructed for Windows icons) */
+  --icon-zone-width: 280px;
+  
   --accent: #f59e0b;
   --accent-glow: #ffb000;
   --accent-cyan: #00f0ff;
@@ -100,15 +103,33 @@ html, body {
   pointer-events: none;
 }
 
-/* App Container */
+/* App Container — With Left Desktop Icons Clearance Zone */
 .dashboard-container {
   position: relative;
   z-index: 2;
   display: grid;
   grid-template-rows: 54px 74px 1fr 34px;
   height: 100vh;
-  padding: 12px 16px 8px;
+  padding: 12px 18px 8px calc(var(--icon-zone-width, 280px) + 16px);
   gap: 12px;
+  transition: padding-left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Subtle Sci-Fi Boundary separating Desktop Icons from Mission Control */
+.icon-zone-boundary {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--icon-zone-width, 280px);
+  width: 1px;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(245, 158, 11, 0.20) 10%, 
+    rgba(245, 158, 11, 0.06) 85%, 
+    transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+  transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* ============================================================

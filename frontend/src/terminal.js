@@ -27,6 +27,9 @@ export class WallpaperTerminal {
       tailscale: () => this.cmdTailscale(),
       theme: () => this.cmdTheme(),
       weather: () => this.cmdWeather(),
+      icons: (args) => this.cmdIcons(args),
+      margin: (args) => this.cmdIcons(args),
+      clearance: (args) => this.cmdIcons(args),
       echo: (args) => this.print(args.join(' ')),
       open: (args) => this.cmdOpen(args),
     };
@@ -133,6 +136,7 @@ export class WallpaperTerminal {
       ['tailscale', 'Display Tailscale mesh node IP & POCO F7 link'],
       ['weather', 'Fetch live weather for South Yorkshire'],
       ['theme', 'Cycle color accent (Amber, Cyan, Emerald, Purple)'],
+      ['icons [px]', 'Set left clearance for desktop icons (e.g. icons 280, icons 360, icons 0)'],
       ['clear', 'Clear terminal screen'],
     ];
     list.forEach(([cmd, desc]) => {
@@ -275,6 +279,20 @@ export class WallpaperTerminal {
       this.print(`📍 <span class="accent-text">Barnsley / South Yorkshire:</span> ${temp}°C &bull; Humidity ${humidity}% &bull; Wind ${wind} km/h`);
     } catch (e) {
       this.print('📍 Barnsley, South Yorkshire: 15°C &bull; Overcast &bull; Humidity 78%', 'term-info');
+    }
+  }
+
+  cmdIcons(args) {
+    if (args && args.length > 0) {
+      let val = args[0].toLowerCase();
+      if (!val.endsWith('px') && !isNaN(val)) val = val + 'px';
+      document.documentElement.style.setProperty('--icon-zone-width', val);
+      localStorage.setItem('linacre_icon_zone_width', val);
+      this.print(`<span class="term-success">✓ Desktop Icon Clearance set to: <strong>${val}</strong></span>`);
+    } else {
+      const current = getComputedStyle(document.documentElement).getPropertyValue('--icon-zone-width').trim() || '280px';
+      this.print(`<span class="term-info">Desktop Icon Clearance is currently: <strong>${current}</strong></span>`);
+      this.print('<span class="term-dim">Usage: icons 280 (standard 3-cols) | icons 360 (wide 4-cols) | icons 200 (compact 2-cols) | icons 0 (off)</span>');
     }
   }
 }
