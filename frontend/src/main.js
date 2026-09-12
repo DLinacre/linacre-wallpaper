@@ -4,6 +4,7 @@
 
 import { WallpaperTerminal, initMatrixRain } from './terminal.js';
 import { VitalsEngine } from './vitals.js';
+import { audioFx } from './audio.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Live Clock & Date
@@ -39,7 +40,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Hardware Vitals Engine
   const vitals = new VitalsEngine();
 
-  // 5. Controls & Shortcuts
+  // 5. Audio FX Integration
+  const soundBtn = document.getElementById('soundToggleBtn');
+  const soundOn = document.getElementById('soundIconOn');
+  const soundOff = document.getElementById('soundIconOff');
+
+  if (soundBtn) {
+    soundBtn.addEventListener('click', () => {
+      const isMuted = audioFx.toggleMute();
+      soundOn.style.display = isMuted ? 'none' : 'block';
+      soundOff.style.display = isMuted ? 'block' : 'none';
+      if (!isMuted) audioFx.playClick();
+    });
+  }
+
+  // Audio feedback for terminal typing & chips
+  if (termIn) {
+    termIn.addEventListener('input', () => audioFx.playKeyTick());
+    termIn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') audioFx.playSuccess();
+    });
+  }
+
+  document.querySelectorAll('.chip-btn, .launch-card, .icon-toggle-btn').forEach(el => {
+    el.addEventListener('click', () => audioFx.playClick());
+  });
+
+  // 6. Controls & Shortcuts
   const matrixBtn = document.getElementById('toggleMatrixBtn');
   if (matrixBtn) {
     matrixBtn.addEventListener('click', () => terminal.cmdToggleMatrix());
@@ -80,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
       terminal.cmdToggleMatrix();
     } else if (e.key === 'c' || e.key === 'C') {
       terminal.cmdTheme();
+    } else if (e.key === 's' || e.key === 'S') {
+      soundBtn?.click();
     }
   });
 
