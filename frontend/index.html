@@ -1,365 +1,453 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-GB" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <title>linacre.wallpaper — System Monitor</title>
-
-  <!-- Linacre brand CSS variables — EXACT match from linacre.site index.css -->
-  <style>
-    :root {
-      /* Brand colours — Light theme (from linacre.site) */
-      --color-amber-color: #F59E0B;
-      --color-amber-glow: #FFB000;
-      --color-amber-deep: #D97706;
-      --color-cyan: #22D3EE;
-      --color-emerald-color: #34D399;
-      --color-purple-color: #A78BFA;
-      --color-cream: #F5E7C8;
-      --color-error: #FB7185;
-
-      /* Light theme tokens (from linacre.site :root) */
-      --background: #fafafa;
-      --foreground: #171717;
-      --muted: #f4f4f5;
-      --muted-foreground: #52525b;
-      --border-color: rgba(245, 158, 11, 0.18);
-      --border-hi: rgba(245, 158, 11, 0.35);
-      --linacre-ink: #fafafa;
-      --linacre-deep-slate: #f4f4f5;
-      --linacre-panel: #ffffff;
-      --linacre-border: rgba(245, 158, 11, 0.18);
-      --linacre-border-strong: rgba(245, 158, 11, 0.35);
-      --linacre-glow-soft: 0 0 24px rgba(245, 158, 11, 0.10);
-      --linacre-glow-strong: 0 0 42px rgba(245, 158, 11, 0.18);
-      --linacre-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-
-      /* Gradients (light) */
-      --linacre-gradient-hero: linear-gradient(135deg, #fafafa 0%, #f4f4f5 100%);
-      --linacre-gradient-card: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,250,250,0.96));
-
-      /* Motion */
-      --linacre-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --linacre-duration-fast: 160ms;
-      --linacre-duration-base: 260ms;
-      --linacre-duration-slow: 700ms;
-    }
-
-    /* Dark theme (brand canonical from linacre.site .dark) */
-    .dark {
-      --background: #0b0e14;
-      --foreground: #f4f4f5;
-      --muted: #111622;
-      --muted-foreground: #b8bec9;
-      --border-color: rgba(245, 158, 11, 0.16);
-      --border-hi: rgba(245, 158, 11, 0.36);
-      --linacre-ink: #0b0e14;
-      --linacre-deep-slate: #111622;
-      --linacre-panel: #161a23;
-      --linacre-panel-soft: #1e2533;
-      --linacre-border: rgba(245, 158, 11, 0.22);
-      --linacre-border-strong: rgba(245, 158, 11, 0.46);
-      --linacre-glow-soft: 0 0 24px rgba(245, 158, 11, 0.18);
-      --linacre-glow-strong: 0 0 42px rgba(255, 176, 0, 0.28);
-      --linacre-card-shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
-
-      /* Gradients (dark — brand canonical) */
-      --linacre-gradient-hero:
-        radial-gradient(circle at 18% 18%, rgba(245, 158, 11, 0.12), transparent 34%),
-        radial-gradient(circle at 82% 16%, rgba(198, 40, 40, 0.06), transparent 26%),
-        linear-gradient(135deg, #0b0e14 0%, #111622 52%, #0b0e14 100%);
-      --linacre-gradient-card:
-        linear-gradient(180deg, rgba(22, 26, 35, 0.92), rgba(17, 22, 30, 0.92));
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      :root, .dark {
-        --linacre-duration-fast: 0ms;
-        --linacre-duration-base: 0ms;
-        --linacre-duration-slow: 0ms;
-      }
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* Base resets */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%; width: 100%; overflow: hidden;
-      background-color: var(--background);
-      color: var(--foreground);
-      font-family: var(--font-sans, "Inter", ui-sans-serif, system-ui, sans-serif);
-      font-size: 14px; line-height: 1.5;
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-      transition: background-color var(--linacre-duration-base) var(--linacre-ease),
-                  color var(--linacre-duration-fast) var(--linacre-ease);
-    }
-
-    /* Font-family tokens as real CSS custom properties — no build step needed.
-       main.css consumes these via var(--font-*). To use the exact linacre.site
-       webfonts, drop the matching .woff2 files into ./fonts/ and re-add
-       @font-face rules here (kept out by default so nothing 404s). */
-    :root {
-      --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, "IBM Plex Mono", "Fira Code", monospace;
-      --font-display: "Space Grotesk", "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
-    }
-  </style>
-
+  <title>LINACRE // MISSION CONTROL — Live Wallpaper</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <div class="wallpaper-bg" aria-hidden="true">
-    <img src="summit-bg.svg" alt="" class="wallpaper-bg-img" aria-hidden="true">
-    <div class="wallpaper-bg-overlay"></div>
-  </div>
-  <div id="app" class="wallpaper">
-    <!-- Skip link for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to dashboard</a>
+  <!-- Ambient Matrix Rain Background Canvas -->
+  <canvas id="matrixCanvas" class="matrix-canvas"></canvas>
+  
+  <!-- Subtle gradient & grid overlay -->
+  <div class="cyber-grid-overlay" aria-hidden="true"></div>
 
-    <!-- Header / Status Bar -->
-    <header class="header" role="banner">
-      <div class="header-left">
-        <div class="brand" aria-label="Linacre Wallpaper">
-          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <div id="app" class="dashboard-container">
+    
+    <!-- TOP BAR: System Ident, Clock, Tailscale & Controls -->
+    <header class="top-bar">
+      <div class="brand-cluster">
+        <div class="brand-emblem">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="4 17 10 11 4 5"></polyline>
             <line x1="12" y1="19" x2="20" y2="19"></line>
           </svg>
-          <span class="brand-text"><span class="brand-prefix">linacre</span><span class="brand-dot">.</span><span class="brand-suffix">wallpaper</span></span>
         </div>
-        <span class="host-badge" id="hostBadge" aria-live="polite">Connecting…</span>
-      </div>
-
-      <div class="header-center">
-        <div class="system-clock" id="systemClock" aria-live="polite" aria-atomic="true">
-          <span class="clock-time" id="clockTime">--:--:--</span>
-          <span class="clock-date" id="clockDate">---, -- --- ----</span>
+        <div class="brand-titles">
+          <div class="brand-main">LINACRE <span class="accent-text">// MISSION CONTROL</span></div>
+          <div class="brand-sub">RIG: DL • RTX 3070 Ti • 64 GB DDR4 • 2560x1440</div>
         </div>
       </div>
 
-      <div class="header-right">
-        <div class="connection-status" id="connectionStatus" aria-live="polite">
-          <span class="status-dot"></span>
-          <span class="status-text">Connecting</span>
+      <div class="center-clock-cluster">
+        <div class="live-clock" id="liveClock">21:58:45</div>
+        <div class="live-date" id="liveDate">Saturday, 12 September 2026</div>
+      </div>
+
+      <div class="status-controls-cluster">
+        <div class="tailscale-pill" title="Tailscale MagicDNS Node">
+          <span class="pulse-dot green"></span>
+          <span class="pill-label">TAILSCALE</span>
+          <span class="pill-value">DL (192.168.0.71)</span>
         </div>
-        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme (T)">
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </button>
-        <button class="cmd-palette-trigger" id="cmdPaletteTrigger" aria-label="Open command palette (Ctrl+K)" title="Command Palette (Ctrl+K)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <kbd class="kbd-shortcut">^K</kbd>
-        </button>
+
+        <div class="quick-toggles">
+          <button id="toggleMatrixBtn" class="icon-toggle-btn" title="Toggle Matrix Digital Rain (M)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16v16H4z"></path><path d="M4 9h16M9 4v16"></path>
+            </svg>
+          </button>
+          
+          <button id="accentCycleBtn" class="icon-toggle-btn" title="Cycle Accent Colour (Amber / Cyan / Emerald / Purple)">
+            <span class="color-swatch-icon"></span>
+          </button>
+
+          <button id="fullscreenBtn" class="icon-toggle-btn" title="Toggle Fullscreen (F11)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
 
-    <!-- Main Dashboard Grid -->
-    <main id="main-content" class="dashboard" role="main">
-      <!-- Left Monitor (Portrait 1080p) - Primary System Vitals -->
-      <section class="monitor monitor-left" id="monitorLeft" aria-label="Primary system vitals">
-        <div class="panel cpu-panel" data-panel="cpu">
+    <!-- QUICK LAUNCH PROJECT DOCK: Clickable Interactive Tiles -->
+    <section class="quick-launch-dock" aria-label="Project Quick Launch">
+      <a href="https://linacre.site" target="_blank" rel="noopener" class="launch-card">
+        <div class="card-icon cyan">🌐</div>
+        <div class="card-info">
+          <div class="card-name">linacre.site</div>
+          <div class="card-desc">Portfolio & Web Portal</div>
+        </div>
+        <span class="card-ping-badge" data-endpoint="https://linacre.site">ONLINE</span>
+      </a>
+
+      <a href="http://localhost:8188" target="_blank" rel="noopener" class="launch-card highlight-glow">
+        <div class="card-icon amber">🎨</div>
+        <div class="card-info">
+          <div class="card-name">ComfyUI Studio</div>
+          <div class="card-desc">MusicGen • Kokoro • SD/Flux</div>
+        </div>
+        <span class="card-ping-badge" data-port="8188">PORT 8188</span>
+      </a>
+
+      <a href="http://localhost:8127" target="_blank" rel="noopener" class="launch-card">
+        <div class="card-icon purple">🤖</div>
+        <div class="card-info">
+          <div class="card-name">Locally Uncensored</div>
+          <div class="card-desc">Local LLM & Gemma Heretic</div>
+        </div>
+        <span class="card-ping-badge" data-port="8127">PORT 8127</span>
+      </a>
+
+      <a href="https://localhost:47990" target="_blank" rel="noopener" class="launch-card">
+        <div class="card-icon emerald">☀️</div>
+        <div class="card-info">
+          <div class="card-name">Sunshine Remote</div>
+          <div class="card-desc">POCO F7 Streamer (NVENC)</div>
+        </div>
+        <span class="card-ping-badge" data-port="47990">PORT 47990</span>
+      </a>
+
+      <a href="http://localhost:11434" target="_blank" rel="noopener" class="launch-card">
+        <div class="card-icon red">🧠</div>
+        <div class="card-info">
+          <div class="card-name">Ollama Engine</div>
+          <div class="card-desc">Local AI Inference API</div>
+        </div>
+        <span class="card-ping-badge" data-port="11434">PORT 11434</span>
+      </a>
+
+      <a href="https://github.com/DLinacre" target="_blank" rel="noopener" class="launch-card">
+        <div class="card-icon blue">🐙</div>
+        <div class="card-info">
+          <div class="card-name">GitHub : DLinacre</div>
+          <div class="card-desc">58 Repositories • 100% Main</div>
+        </div>
+        <span class="card-ping-badge static">ACTIVE</span>
+      </a>
+
+      <a href="file:///D:/Projects" class="launch-card" id="openProjectsDirLink">
+        <div class="card-icon gold">📁</div>
+        <div class="card-info">
+          <div class="card-name">D:\Projects</div>
+          <div class="card-desc">Local Code Repositories</div>
+        </div>
+        <span class="card-ping-badge static">LOCAL</span>
+      </a>
+
+      <a href="http://127.0.0.1:53" target="_blank" rel="noopener" class="launch-card">
+        <div class="card-icon green">🛡️</div>
+        <div class="card-info">
+          <div class="card-name">uBlockDNS</div>
+          <div class="card-desc">Whole-Home Ad Sinkhole</div>
+        </div>
+        <span class="card-ping-badge" data-port="53">PORT 53</span>
+      </a>
+    </section>
+
+    <!-- MAIN 3-COLUMN WORKSPACE -->
+    <main class="main-workspace-grid">
+      
+      <!-- LEFT COLUMN: SYSTEM VITALS & HARDWARE TELEMETRY -->
+      <aside class="col-vitals">
+        
+        <!-- CPU PANEL -->
+        <div class="glass-panel vitals-panel">
           <div class="panel-header">
-            <h2 class="panel-title">
-              <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line></svg>
-              CPU
-            </h2>
-            <div class="panel-value" id="cpuTotal">--%</div>
+            <div class="panel-title-wrap">
+              <span class="panel-icon-svg">⚡</span>
+              <h2 class="panel-title">CPU Telemetry</h2>
+            </div>
+            <span class="panel-stat-primary" id="cpuStatPercent">18%</span>
           </div>
-          <div class="cpu-cores" id="cpuCores" role="img" aria-label="Per-core usage"></div>
-          <div class="cpu-details">
-            <div class="detail-row">
-              <span class="detail-label">Freq</span>
-              <span class="detail-value" id="cpuFreq">-- MHz</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Temp</span>
-              <span class="detail-value" id="cpuTemp">--°C</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Load</span>
-              <span class="detail-value" id="cpuLoad">-- / -- / --</span>
-            </div>
+          <div class="meter-track">
+            <div class="meter-bar cpu-bar" id="cpuMeterBar" style="width: 18%"></div>
           </div>
-          <canvas class="sparkline" id="cpuSparkline" width="200" height="40" aria-hidden="true"></canvas>
+          <div class="core-threads-grid" id="cpuThreadsGrid">
+            <!-- 16 simulated core bars -->
+          </div>
+          <div class="stats-row">
+            <div class="stat-cell"><span class="lbl">Clock:</span> <span class="val" id="cpuFreq">4.82 GHz</span></div>
+            <div class="stat-cell"><span class="lbl">Temp:</span> <span class="val" id="cpuTemp">41°C</span></div>
+            <div class="stat-cell"><span class="lbl">Threads:</span> <span class="val">16 Cores</span></div>
+          </div>
         </div>
 
-        <div class="panel memory-panel" data-panel="memory">
+        <!-- GPU PANEL (RTX 3070 Ti) -->
+        <div class="glass-panel vitals-panel">
           <div class="panel-header">
-            <h2 class="panel-title">
-              <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"></rect><rect x="6" y="6" width="12" height="12"></rect></svg>
-              Memory
-            </h2>
-            <div class="panel-value" id="memPercent">--%</div>
-          </div>
-          <div class="usage-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="memBar">
-            <div class="usage-fill" id="memFill" style="width: 0%"></div>
-          </div>
-          <div class="memory-breakdown">
-            <div class="mem-item">
-              <span class="mem-label">Used</span>
-              <span class="mem-value" id="memUsed">-- GB</span>
+            <div class="panel-title-wrap">
+              <span class="panel-icon-svg">🎮</span>
+              <h2 class="panel-title">RTX 3070 Ti (8 GB)</h2>
             </div>
-            <div class="mem-item">
-              <span class="mem-label">Available</span>
-              <span class="mem-value" id="memAvail">-- GB</span>
-            </div>
-            <div class="mem-item">
-              <span class="mem-label">Swap</span>
-              <span class="mem-value" id="memSwap">--%</span>
-            </div>
+            <span class="panel-stat-primary" id="gpuStatPercent">14%</span>
           </div>
-          <canvas class="sparkline" id="memSparkline" width="200" height="40" aria-hidden="true"></canvas>
+          <div class="meter-track">
+            <div class="meter-bar gpu-bar" id="gpuMeterBar" style="width: 14%"></div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-cell"><span class="lbl">VRAM:</span> <span class="val" id="gpuVram">3.2 / 8.0 GB</span></div>
+            <div class="stat-cell"><span class="lbl">Temp:</span> <span class="val" id="gpuTemp">48°C</span></div>
+            <div class="stat-cell"><span class="lbl">Power:</span> <span class="val" id="gpuPower">85 W</span></div>
+          </div>
         </div>
 
-        <div class="panel gpu-panel" data-panel="gpu" id="gpuPanel" hidden>
+        <!-- MEMORY PANEL (64 GB) -->
+        <div class="glass-panel vitals-panel">
           <div class="panel-header">
-            <h2 class="panel-title">
-              <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-              GPU
-            </h2>
-            <div class="panel-value" id="gpuUsage">--%</div>
-          </div>
-          <div class="gpu-info" id="gpuInfo">
-            <span class="gpu-name" id="gpuName">Detecting…</span>
-          </div>
-          <div class="usage-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="gpuMemBar">
-            <div class="usage-fill" id="gpuMemFill" style="width: 0%"></div>
-          </div>
-          <div class="gpu-details">
-            <div class="detail-row">
-              <span class="detail-label">VRAM</span>
-              <span class="detail-value" id="gpuVRAM">-- / -- GB</span>
+            <div class="panel-title-wrap">
+              <span class="panel-icon-svg">🧠</span>
+              <h2 class="panel-title">Memory (64 GB DDR4)</h2>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Temp</span>
-              <span class="detail-value" id="gpuTemp">--°C</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Power</span>
-              <span class="detail-value" id="gpuPower">-- / -- W</span>
-            </div>
+            <span class="panel-stat-primary" id="ramStatPercent">28%</span>
           </div>
-          <canvas class="sparkline" id="gpuSparkline" width="200" height="40" aria-hidden="true"></canvas>
+          <div class="meter-track">
+            <div class="meter-bar mem-bar" id="ramMeterBar" style="width: 28%"></div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-cell"><span class="lbl">Used:</span> <span class="val" id="ramUsed">18.4 GB</span></div>
+            <div class="stat-cell"><span class="lbl">Free:</span> <span class="val" id="ramFree">45.6 GB</span></div>
+            <div class="stat-cell"><span class="lbl">Cache:</span> <span class="val">6.2 GB</span></div>
+          </div>
         </div>
 
-        <div class="panel services-panel" data-panel="services">
+        <!-- STORAGE DRIVES (C, D, E) -->
+        <div class="glass-panel vitals-panel">
           <div class="panel-header">
-            <h2 class="panel-title">
-              <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
-              Services
-            </h2>
+            <div class="panel-title-wrap">
+              <span class="panel-icon-svg">💾</span>
+              <h2 class="panel-title">Storage Volumes</h2>
+            </div>
           </div>
-          <ul class="service-list" id="serviceList" role="list"></ul>
+          <div class="drive-item">
+            <div class="drive-label-row">
+              <span class="drive-name">C: NVMe OS</span>
+              <span class="drive-meta">167 GB free of 296 GB</span>
+            </div>
+            <div class="meter-track mini"><div class="meter-bar" style="width: 64%"></div></div>
+          </div>
+          <div class="drive-item">
+            <div class="drive-label-row">
+              <span class="drive-name">D: Projects & Vault</span>
+              <span class="drive-meta">323 GB free of 608 GB</span>
+            </div>
+            <div class="meter-track mini"><div class="meter-bar amber" style="width: 65%"></div></div>
+          </div>
+          <div class="drive-item">
+            <div class="drive-label-row">
+              <span class="drive-name">E: AI & Tooling</span>
+              <span class="drive-meta">415 GB free of 464 GB</span>
+            </div>
+            <div class="meter-track mini"><div class="meter-bar green" style="width: 11%"></div></div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- CENTER COLUMN: INTERACTIVE TERMINAL & COMMAND CENTER -->
+      <section class="col-terminal">
+        <div class="glass-panel terminal-window">
+          
+          <!-- Terminal Titlebar -->
+          <div class="terminal-titlebar">
+            <div class="terminal-controls">
+              <span class="term-dot close"></span>
+              <span class="term-dot minimize"></span>
+              <span class="term-dot expand"></span>
+            </div>
+            <div class="terminal-title">
+              <span class="term-prompt-icon">λ</span> linacre@DL : ~/projects — bash session
+            </div>
+            <div class="terminal-badge">INTERACTIVE CONSOLE</div>
+          </div>
+
+          <!-- Clickable Action Chips -->
+          <div class="terminal-chips-bar">
+            <span class="chips-label">QUICK COMMANDS:</span>
+            <button class="chip-btn" data-cmd="help">help</button>
+            <button class="chip-btn" data-cmd="projects">projects</button>
+            <button class="chip-btn" data-cmd="services">services</button>
+            <button class="chip-btn" data-cmd="sysinfo">sysinfo</button>
+            <button class="chip-btn" data-cmd="matrix">matrix</button>
+            <button class="chip-btn" data-cmd="open comfy">open comfy</button>
+            <button class="chip-btn" data-cmd="open sunshine">open sunshine</button>
+            <button class="chip-btn" data-cmd="clear">clear</button>
+          </div>
+
+          <!-- Terminal Output Feed -->
+          <div class="terminal-body" id="terminalOutput" role="log" aria-live="polite">
+            <div class="term-line term-welcome">
+              <span class="accent-text">LINACRE OS MISSION CONTROL v2.5.0</span> (x86_64-pc-windows-msvc)
+            </div>
+            <div class="term-line term-dim">
+              System initialized for David Linacre. Type <span class="highlight-cmd">help</span> or click command chips above.
+            </div>
+            <div class="term-line term-dim">
+              Tailscale node: <span class="accent-text">DL</span> | Remote Host: <span class="accent-text">POCO F7 (Android)</span>
+            </div>
+            <div class="term-line"><br></div>
+            <div class="term-line term-info">
+              ⚡ Status: All 58 GitHub repos standardized on 'main'. Plaintext secrets purged.
+            </div>
+            <div class="term-line term-dim">
+              Ready for input.
+            </div>
+          </div>
+
+          <!-- Terminal Input Row -->
+          <div class="terminal-input-row">
+            <span class="term-prompt">linacre@DL:~$</span>
+            <input type="text" id="terminalInput" class="term-input" placeholder="type a command (e.g. 'projects', 'services', 'help')..." autocomplete="off" spellcheck="false" autofocus>
+            <button id="termSubmitBtn" class="term-submit-btn">RUN</button>
+          </div>
         </div>
       </section>
 
-      <!-- Right Monitor (Landscape 2K) - Extended Details -->
-      <section class="monitor monitor-right" id="monitorRight" aria-label="Extended system details">
-        <div class="panel-row">
-          <div class="panel disk-panel" data-panel="disk">
-            <div class="panel-header">
-              <h2 class="panel-title">
-                <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="12" x2="2" y2="12"></line><path d="M5.45 5.11L2 12l3.45 6.89M22 12l-3.45 6.89M22 12L2 12"></path></svg>
-                Storage
-              </h2>
-            </div>
-            <div class="disk-list" id="diskList" role="list"></div>
-            <div class="disk-io">
-              <div class="io-pair">
-                <span class="io-label">Read</span>
-                <span class="io-value" id="diskRead">-- MB/s</span>
-              </div>
-              <div class="io-pair">
-                <span class="io-label">Write</span>
-                <span class="io-value" id="diskWrite">-- MB/s</span>
-              </div>
-            </div>
-            <canvas class="sparkline" id="diskSparkline" width="200" height="40" aria-hidden="true"></canvas>
-          </div>
-
-          <div class="panel network-panel" data-panel="network">
-            <div class="panel-header">
-              <h2 class="panel-title">
-                <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="22" height="22" rx="2"></rect><line x1="1" y1="12" x2="23" y2="12"></line></svg>
-                Network
-              </h2>
-            </div>
-            <div class="network-total">
-              <div class="net-direction">
-                <span class="net-label">▲ Up</span>
-                <span class="net-value" id="netUp">-- MB/s</span>
-              </div>
-              <div class="net-direction">
-                <span class="net-label">▼ Down</span>
-                <span class="net-value" id="netDown">-- MB/s</span>
-              </div>
-            </div>
-            <ul class="interface-list" id="interfaceList" role="list"></ul>
-            <canvas class="sparkline" id="netSparkline" width="200" height="40" aria-hidden="true"></canvas>
-          </div>
-        </div>
-
-        <div class="panel docker-panel" data-panel="docker" id="dockerPanel" hidden>
+      <!-- RIGHT COLUMN: SERVICES MONITOR & PROJECTS ECOSYSTEM -->
+      <aside class="col-ecosystem">
+        
+        <!-- SERVICES HEALTH MONITOR -->
+        <div class="glass-panel">
           <div class="panel-header">
-            <h2 class="panel-title">
-              <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
-              Docker
-            </h2>
-            <div class="docker-summary">
-              <span class="docker-count" id="dockerCount">-- / -- running</span>
-              <span class="docker-resources" id="dockerResources">CPU: --% • RAM: -- GB</span>
+            <div class="panel-title-wrap">
+              <span class="panel-icon-svg">📡</span>
+              <h2 class="panel-title">Active Services</h2>
             </div>
+            <button id="refreshServicesBtn" class="refresh-pill-btn" title="Check ports">RETEST</button>
           </div>
-          <ul class="container-list" id="containerList" role="list"></ul>
+          
+          <ul class="service-status-list">
+            <li class="service-row" data-service="sunshine">
+              <div class="svc-left">
+                <span class="pulse-dot green" id="dot-47990"></span>
+                <div class="svc-info">
+                  <span class="svc-title">Sunshine Streaming</span>
+                  <span class="svc-sub">Port 47990 • Low Latency NVENC</span>
+                </div>
+              </div>
+              <a href="https://localhost:47990" target="_blank" class="svc-link">LAUNCH ↗</a>
+            </li>
+
+            <li class="service-row" data-service="comfyui">
+              <div class="svc-left">
+                <span class="pulse-dot amber" id="dot-8188"></span>
+                <div class="svc-info">
+                  <span class="svc-title">ComfyUI Studio</span>
+                  <span class="svc-sub">Port 8188 • Kokoro & MusicGen</span>
+                </div>
+              </div>
+              <a href="http://localhost:8188" target="_blank" class="svc-link">LAUNCH ↗</a>
+            </li>
+
+            <li class="service-row" data-service="locally-uncensored">
+              <div class="svc-left">
+                <span class="pulse-dot green" id="dot-8127"></span>
+                <div class="svc-info">
+                  <span class="svc-title">Locally Uncensored</span>
+                  <span class="svc-sub">Port 8127 • Heretic Engine</span>
+                </div>
+              </div>
+              <a href="http://localhost:8127" target="_blank" class="svc-link">LAUNCH ↗</a>
+            </li>
+
+            <li class="service-row" data-service="ollama">
+              <div class="svc-left">
+                <span class="pulse-dot green" id="dot-11434"></span>
+                <div class="svc-info">
+                  <span class="svc-title">Ollama LLM API</span>
+                  <span class="svc-sub">Port 11434 • 0.0.0.0:11434</span>
+                </div>
+              </div>
+              <a href="http://localhost:11434" target="_blank" class="svc-link">LAUNCH ↗</a>
+            </li>
+
+            <li class="service-row" data-service="ublockdns">
+              <div class="svc-left">
+                <span class="pulse-dot green" id="dot-53"></span>
+                <div class="svc-info">
+                  <span class="svc-title">uBlockDNS Resolver</span>
+                  <span class="svc-sub">Port 53 • 127.0.0.1</span>
+                </div>
+              </div>
+              <span class="svc-status-text">SHIELDED</span>
+            </li>
+          </ul>
         </div>
 
-        <div class="panel processes-panel" data-panel="processes">
+        <!-- REPOSITORIES & ECOSYSTEM RADAR -->
+        <div class="glass-panel">
           <div class="panel-header">
-            <h2 class="panel-title">
-              <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
-              Top Processes
-            </h2>
-            <div class="panel-actions">
-              <input type="text" class="process-filter" id="processFilter" placeholder="Filter processes…" aria-label="Filter processes">
+            <div class="panel-title-wrap">
+              <span class="panel-icon-svg">📂</span>
+              <h2 class="panel-title">Project Radar</h2>
             </div>
+            <a href="https://github.com/DLinacre?tab=repositories" target="_blank" class="view-all-link">ALL 58 ↗</a>
           </div>
-          <table class="process-table" id="processTable" role="table">
-            <thead>
-              <tr>
-                <th scope="col">PID</th>
-                <th scope="col">Process</th>
-                <th scope="col">CPU%</th>
-                <th scope="col">RAM%</th>
-                <th scope="col">RAM (MB)</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody id="processBody"></tbody>
-          </table>
+
+          <div class="project-mini-list">
+            <a href="https://github.com/DLinacre/linacre.site" target="_blank" class="proj-mini-card">
+              <div class="proj-meta-top">
+                <span class="proj-tag web">WEB</span>
+                <span class="proj-name">linacre.site</span>
+              </div>
+              <div class="proj-sub">Personal portfolio, showcase & ecosystem portal</div>
+            </a>
+
+            <a href="https://github.com/DLinacre/Deasy" target="_blank" class="proj-mini-card">
+              <div class="proj-meta-top">
+                <span class="proj-tag app">DESKTOP</span>
+                <span class="proj-name">Deasy</span>
+              </div>
+              <div class="proj-sub">Multi-platform branch orchestrator & AES pipeline</div>
+            </a>
+
+            <a href="https://github.com/DLinacre/cubelab" target="_blank" class="proj-mini-card">
+              <div class="proj-meta-top">
+                <span class="proj-tag game">PWA</span>
+                <span class="proj-name">cubelab</span>
+              </div>
+              <div class="proj-sub">Offline-first 3D Rubik's cube solver & trainer</div>
+            </a>
+
+            <a href="https://github.com/DLinacre/bonny-bakes" target="_blank" class="proj-mini-card">
+              <div class="proj-meta-top">
+                <span class="proj-tag web">WEB</span>
+                <span class="proj-name">bonny-bakes</span>
+              </div>
+              <div class="proj-sub">Home baking recipes with dynamic quantity scaling</div>
+            </a>
+
+            <a href="https://github.com/DLinacre/azaroth-installer" target="_blank" class="proj-mini-card">
+              <div class="proj-meta-top">
+                <span class="proj-tag tool">DEVOPS</span>
+                <span class="proj-name">azaroth-installer</span>
+              </div>
+              <div class="proj-sub">1-Click AzerothCore 3.3.5a + PlayerBots installer</div>
+            </a>
+
+            <a href="https://github.com/DLinacre/knowledge-vault" target="_blank" class="proj-mini-card">
+              <div class="proj-meta-top">
+                <span class="proj-tag core">VAULT</span>
+                <span class="proj-name">knowledge-vault</span>
+              </div>
+              <div class="proj-sub">Curated engineering knowledge base & patterns</div>
+            </a>
+          </div>
         </div>
-      </section>
+
+      </aside>
+
     </main>
 
-    <!-- Command Palette Overlay -->
-    <div class="cmd-palette-overlay" id="cmdPaletteOverlay" role="dialog" aria-modal="true" aria-label="Command Palette" hidden>
-      <div class="cmd-palette" id="cmdPalette">
-        <div class="cmd-header">
-          <svg class="cmd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" class="cmd-input" id="cmdInput" placeholder="Type a command…" autocomplete="off" spellcheck="false" aria-label="Command input">
-          <kbd class="cmd-hint">↵ Execute · Esc Close</kbd>
-        </div>
-        <div class="cmd-results" id="cmdResults" role="listbox"></div>
-        <div class="cmd-footer">
-          <span class="cmd-hint">Linacre Wallpaper v1.0 · Ctrl+K to open</span>
-        </div>
+    <!-- FOOTER: Ecosystem Health & Status -->
+    <footer class="footer-bar">
+      <div class="footer-left">
+        <span class="status-indicator-badge ok">● ECOSYSTEM OPERATIONAL</span>
+        <span class="footer-sep">|</span>
+        <span class="footer-dim">SECURITY POSTURE: 100% CLEAN • ZERO RAW TOKENS COMMITTED</span>
       </div>
-    </div>
+      <div class="footer-right">
+        <span>PRESS <kbd>T</kbd> FOR TERMINAL • <kbd>M</kbd> FOR MATRIX • <kbd>C</kbd> FOR ACCENT</span>
+      </div>
+    </footer>
 
-    <!-- Notification Toast Container -->
-    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
   </div>
 
   <script type="module" src="src/main.js"></script>

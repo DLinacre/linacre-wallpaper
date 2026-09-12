@@ -1,46 +1,87 @@
 /**
- * Linacre Wallpaper — Frontend Entry Point
- * Real-time system monitor with linacre.site theme
+ * Linacre Mission Control Wallpaper — Main Application Entrypoint
  */
 
-import { WallpaperApp } from './app.js';
-import { registerFonts } from './utils/fonts.js';
-import { setupCommandPalette } from './components/CommandPalette.js';
-import { setupToasts } from './components/Toast.js';
+import { WallpaperTerminal, initMatrixRain } from './terminal.js';
+import { VitalsEngine } from './vitals.js';
 
-// Global error handler
-window.addEventListener('error', (e) => {
-  console.error('[Wallpaper] Uncaught error:', e.error);
-  showToast('error', 'Runtime Error', e.error?.message || 'Unknown error');
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Live Clock & Date
+  const clockEl = document.getElementById('liveClock');
+  const dateEl = document.getElementById('liveDate');
+
+  function updateClock() {
+    const now = new Date();
+    if (clockEl) {
+      clockEl.textContent = now.toLocaleTimeString('en-GB', { hour12: false });
+    }
+    if (dateEl) {
+      dateEl.textContent = now.toLocaleDateString('en-GB', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // 2. Matrix Digital Rain Canvas
+  initMatrixRain('matrixCanvas');
+
+  // 3. Interactive Terminal
+  const termOut = document.getElementById('terminalOutput');
+  const termIn = document.getElementById('terminalInput');
+  const termBtn = document.getElementById('termSubmitBtn');
+  const terminal = new WallpaperTerminal(termOut, termIn, termBtn);
+
+  // 4. Hardware Vitals Engine
+  const vitals = new VitalsEngine();
+
+  // 5. Controls & Shortcuts
+  const matrixBtn = document.getElementById('toggleMatrixBtn');
+  if (matrixBtn) {
+    matrixBtn.addEventListener('click', () => terminal.cmdToggleMatrix());
+  }
+
+  const accentBtn = document.getElementById('accentCycleBtn');
+  if (accentBtn) {
+    accentBtn.addEventListener('click', () => terminal.cmdTheme());
+  }
+
+  const fsBtn = document.getElementById('fullscreenBtn');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+  }
+
+  // Retest Services button
+  const retestBtn = document.getElementById('refreshServicesBtn');
+  if (retestBtn) {
+    retestBtn.addEventListener('click', () => {
+      terminal.execute('services');
+    });
+  }
+
+  // Keyboard Shortcuts
+  window.addEventListener('keydown', (e) => {
+    // If user is typing in terminal, don't trigger global shortcuts
+    if (document.activeElement === termIn) return;
+
+    if (e.key === 't' || e.key === 'T') {
+      termIn.focus();
+    } else if (e.key === 'm' || e.key === 'M') {
+      terminal.cmdToggleMatrix();
+    } else if (e.key === 'c' || e.key === 'C') {
+      terminal.cmdTheme();
+    }
+  });
+
+  console.log('[Linacre Wallpaper] Mission Control Ready.');
 });
-
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('[Wallpaper] Unhandled rejection:', e.reason);
-  showToast('error', 'Async Error', e.reason?.message || 'Unknown error');
-});
-
-// Initialize app when DOM ready
-document.addEventListener('DOMContentLoaded', async () => {
-  // Register local fonts
-  await registerFonts();
-
-  // Initialize main app
-  const app = new WallpaperApp();
-  await app.init();
-
-  // Setup command palette
-  setupCommandPalette(app);
-
-  // Setup toast system
-  window.showToast = setupToasts();
-
-  // Expose for debugging
-  window.__LINACRE_WALLPAPER__ = app;
-
-  console.log('[Linacre Wallpaper] Initialized');
-});
-
-// Toast helper (will be replaced by setupToasts)
-function showToast(type, title, message) {
-  console.log(`[Toast ${type}] ${title}: ${message}`);
-}
